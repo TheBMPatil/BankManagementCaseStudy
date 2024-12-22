@@ -1,76 +1,89 @@
 package com.bnkmgmt.acount;
 
-import java.util.Date;
-
 public class SavingAccount extends Account {
+	static int accNoCnt = 1200;
 
-	int accountNo;
-	double minBalance;
-	static double savingAccountInterest;
+	
+	static double minBalance = 1000;
+	static double savingAccountInterest = 4.0;
 
-	public SavingAccount(int customerId, String custumerName, double balance, String address, Date creationDate,
-			int accountNo, double minBalance) {
-		super(customerId, custumerName, balance, address, creationDate);
-		this.accountNo = accountNo;
-		this.minBalance = minBalance;
+	public SavingAccount(String custumerName, String address, String dateOfBirth, long moNo) {
+		super(custumerName, address, dateOfBirth, moNo);
+		this.accountNo = assignAccNo();
+
 	}
 
-	public int getAccountNo() {
-		return accountNo;
+	private int assignAccNo() {
+
+		return accNoCnt++;
 	}
 
+	
 	public void setAccountNo(int accountNo) {
 		this.accountNo = accountNo;
 	}
 
-	public double getMinBalance() {
+	public double getMinBalance() {  
 		return minBalance;
-	}
-
-	public void setMinBalance(double minBalance) {
-		this.minBalance = minBalance;
 	}
 
 	public static double getSavingAccountInterest() {
 		return savingAccountInterest;
 	}
 
-	public static void setSavingAccountInterest(double savingAccountInterest) {
-		SavingAccount.savingAccountInterest = savingAccountInterest;
+//	public double calculateDailyInterestRate() {
+//		double dailyInterestRate = SavingAccount.savingAccountInterest / 365;
+//		return dailyInterestRate;
+//
+//	}
+
+//	public void updateBalanceWithInterest(Date lastTransactionDate) {
+//		Date currentDate = null;
+////        long totalDays = DaysBetweenTransactions.calculateDaysBetweenDates(lastTransactionDate, currentDate); 
+////        balance += balance * calculateDailyInterestRate() * totalDays; 
+//	}
+
+	public void checkBalance() {
+//		Date lastTransactionDate = new Date();
+//		Date currentDate= 12/10/2022;
+//		updateBalanceWithInterest(TranscationOfSavingAccount.getLastTranscationDate());
+		System.out.println("Balance : " + this.getBalance());
 	}
 
-	public void withdraw(double amount) {
-		double temp = this.balance;
-		if (temp - amount <= 1000) {
+	@Override
+	public void deposite(double amount) {
+
+		this.setBalance(this.getBalance() + amount);
+		System.out.println("Deposite successfull of amount : " + amount + " \n Balance : " + this.getBalance());
+	}
+
+	@Override
+	public void withdrow(double amount) {
+		double temp = this.getBalance();
+		if (temp - amount <= minBalance) {
 			System.out.println("Withdrawal not allowed. Minimum balance requirement will be violated.");
 			return;
 		} else {
-			this.balance -= amount;
-			System.out.println("You have withdraw Rs." + amount + " and Remaining Balance is " + this.balance);
+			temp -= amount;
+			this.setBalance(temp);
+			System.out.println("You have withdraw Rs." + amount + " and Remaining Balance is " + this.getBalance());
 		}
-	}
-
-	public double calculateDailyInterestRate() {
-		double dailyInterestRate = SavingAccount.savingAccountInterest / 365;
-		return dailyInterestRate;
 
 	}
 
-	public void updateBalanceWithInterest(Date lastTransactionDate) {
-		Date currentDate = null;
-//        long totalDays = DaysBetweenTransactions.calculateDaysBetweenDates(lastTransactionDate, currentDate); 
-//        balance += balance * calculateDailyInterestRate() * totalDays; 
+	@Override
+	public void calculateIntrest(double amount) {
+		// TODO Auto-generated method stub
+
 	}
 
-	public void depositeAmount(double amount) {
-		balance += amount;
-	}
-
-	public void checkBalance() {
-		Date lastTransactionDate = new Date();
-//		Date currentDate= 12/10/2022;
-//		updateBalanceWithInterest(TranscationOfSavingAccount.getLastTranscationDate());
-
+	public void accountInfo() {
+		super.accountInfo();
+		System.out.println("Account Type : Savings Account");
+		System.out.println("Acccount Number : " + accountNo);
+		System.out.println("Min. Bal. Limit : " + minBalance);
+		System.out.println("Intrest rate : " + savingAccountInterest);
+		System.out.println("====================================================================");
 	}
 
 }

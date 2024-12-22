@@ -1,55 +1,68 @@
 package com.bnkmgmt.acount;
 
-import java.util.Date;
-
 public class CurrentAccount extends Account {
-	
-	int accountNo;
+
+	private static int accNoCnt = 1100;
+
 	double overDraftLimit;
-	static double currentAccountInterest;
-	
-	
-	public CurrentAccount(int customerId, String custumerName, double balance, String address, Date creationDate,
-			int accountNo, double overDraftLimit) {
-		super(customerId, custumerName, balance, address, creationDate);
-		this.accountNo = accountNo;
-		this.overDraftLimit = overDraftLimit;
+	static double currentAccountInterest = 7.00;
+
+	public CurrentAccount(String custumerName, String address, String dateOfBirth, long moNo) {
+		super(custumerName, address, dateOfBirth, moNo);
+
+		this.accountNo = createAccNo();
+		this.overDraftLimit = assignrOverDraftLimit();
 	}
 
-	
-	public int getAccountNo() {
-		return accountNo;
+//Assign overdraaft Limit
+	private double assignrOverDraftLimit() {
+
+		return this.getBalance() * 0.5;
 	}
 
+//Auto Generaate ACccc no
+	private int createAccNo() {
 
-	public void setAccountNo(int accountNo) {
-		this.accountNo = accountNo;
+		return accNoCnt++;
 	}
-
 
 	public double getOverDraftLimit() {
 		return overDraftLimit;
 	}
 
-
 	public void setOverDraftLimit(double overDraftLimit) {
 		this.overDraftLimit = overDraftLimit;
 	}
-
 
 	public static double getCurrentAccountInterest() {
 		return currentAccountInterest;
 	}
 
-
-	public static void setCurrentAccountInterest(double currentAccountInterest) {
-		CurrentAccount.currentAccountInterest = currentAccountInterest;
+	@Override
+	public void deposite(double amount) {
+		this.setBalance(this.getBalance() + amount);
+		System.out.println("Deposite successfull of amount : " + amount + " \n Balance : " + this.getBalance());
 	}
 
+	@Override
+	public void withdrow(double amount) {
+		// TODO Auto-generated method stub
 
-	public void depositeAmount(double amount)
-	{
-		balance += amount;
 	}
-    
+
+	@Override
+	public void calculateIntrest(double amount) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void accountInfo() {
+		super.accountInfo();
+		System.out.println("Account Type : Current Account");
+		System.out.println("Acccount Number : " + accountNo);
+		System.out.println("Over Draft Limit : " + overDraftLimit);
+		System.out.println("Intrest rate : " + currentAccountInterest);
+		System.out.println("====================================================================");
+	}
+
 }

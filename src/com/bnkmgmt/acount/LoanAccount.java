@@ -1,46 +1,52 @@
 package com.bnkmgmt.acount;
 
-import java.util.Date;
 
 public class LoanAccount extends Account {
+	private static int accCnt = 1300;
+	
+	double loanAmount;
+	static double loanAccountInterest = 11.0;
 
-	int accountNo;
-	double pfAmount;
-	static double loanAccountInterest;
-
-	public LoanAccount(int customerId, String custumerName, double balance, String address, Date creationDate,
-			int accountNo, double pfAmount) {
-		super(customerId, custumerName, balance, address, creationDate);
-		this.accountNo = accountNo;
-		this.pfAmount = pfAmount;
+	public LoanAccount(String custumerName, String address, String dateOfBirth, long moNo, double loanAmount) {
+		super(custumerName, address, dateOfBirth, moNo);
+		this.loanAmount = loanAmount;
+		this.accountNo = generateAccountNumber();
 	}
 
-	public int getAccountNo() {
-		return accountNo;
+	
+	private int generateAccountNumber() {
+		return accCnt++;
 	}
 
-	public void setAccountNo(int accountNo) {
-		this.accountNo = accountNo;
+//	public static void setLoanAccountInterest(double loanAccountInterest) {
+//		LoanAccount.loanAccountInterest = loanAccountInterest;
+//	}
+
+	@Override
+	public void deposite(double amount) {
+		this.setBalance(this.getBalance() + amount);
+		System.out.println("Deposite successfull of amount : " + amount + " \n Balance : " + this.getBalance());
 	}
 
-	public double getPfAmount() {
-		return pfAmount;
+	@Override
+	public void withdrow(double amount) {
+		// TODO Auto-generated method stub
+
 	}
 
-	public void setPfAmount(double pfAmount) {
-		this.pfAmount = pfAmount;
-	}
+	@Override
+	public void calculateIntrest(double amount) {
+		// TODO Auto-generated method stub
 
-	public static double getLoanAccountInterest() {
-		return loanAccountInterest;
 	}
-
-	public static void setLoanAccountInterest(double loanAccountInterest) {
-		LoanAccount.loanAccountInterest = loanAccountInterest;
-	}
-
-	public void depositeAmount(double amount) {
-		balance += amount;
+	
+	public void accountInfo() {
+		super.accountInfo();
+		System.out.println("Account Type : Loan Account");
+		System.out.println("Acccount Number : " + accountNo);
+		System.out.println("Loan Amount : " + loanAmount);
+		System.out.println("Intrest rate : " + loanAccountInterest);
+		System.out.println("====================================================================");
 	}
 
 }
