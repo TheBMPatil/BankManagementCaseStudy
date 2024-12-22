@@ -1,9 +1,9 @@
-package com.bnkmgmt.acount;
+package com.bnkmgmt.account;
 
 public class SalaryAccount extends Account {
 
 	double pfAmount;
-	boolean freez = false;
+	static String type = "Salary";
 	static int transactionsLimit = 10;
 	int transactionsCount = 0;
 	static double salaryAccountInterest = 3.0;
@@ -30,17 +30,21 @@ public class SalaryAccount extends Account {
 		SalaryAccount.salaryAccountInterest = salaryAccountInterest;
 	}
 
+	public void resetTransactions() {
+		transactionsCount = 0;
+		System.out.println("Transactions count reset to 0.");
+	}
+
 	@Override
-	public void deposite(double amount) {
+	public void deposit(double amount) {
 
 		this.setBalance(this.getBalance() + amount);
 		System.out.println("Deposite successfull of amount : " + amount + " \n Balance : " + this.getBalance());
-		this.setBalance(this.getBalance() + amount);
 
 	}
 
 	@Override
-	public void withdrow(double amount) {
+	public void withdraw(double amount) {
 		// TODO Auto-generated method stub
 		if (transactionsCount >= transactionsLimit) {
 			System.out.println("Transactions Limit reached  can't withdrow...!");
@@ -60,20 +64,32 @@ public class SalaryAccount extends Account {
 	}
 
 	@Override
-	public void calculateIntrest(double amount) {
-		// TODO Auto-generated method stub
-
+	public void calculateIntrest() {
+		double interest = this.getBalance() * (salaryAccountInterest / 100);
+//		System.out.println("Interest Calculated: " + interest);
+		this.setBalance(this.getBalance() + interest);
 	}
 
 	public void accountInfo() {
 		super.accountInfo();
-		System.out.println("Account Type : Salary Account");
-		System.out.println("Acccount Number : " + accountNo);
-		System.out.println("PF Amount : " + pfAmount);
-		System.out.println("Intrest rate : " + salaryAccountInterest);
-		System.out.println("Maximam Transaction limit : " + transactionsLimit);
+		System.out.println("Account Type 				: Salary Account");
+		System.out.println("Acccount Number 			: " + accountNo);
+		System.out.println("PF Amount 			: " + pfAmount);
+		System.out.println("Intrest rate				: " + salaryAccountInterest);
+		System.out.println("Maximam Transaction limit 	: " + transactionsLimit);
 		System.out.println("No of transactions remaining : " + (transactionsLimit - transactionsCount));
 		System.out.println("====================================================================");
+	}
+
+	public void checkBalance() {
+
+		calculateIntrest();
+		System.out.println("Balance : " + this.getBalance());
+	}
+
+	public String getType() {
+		// TODO Auto-generated method stub
+		return this.type;
 	}
 
 }

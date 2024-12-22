@@ -1,6 +1,6 @@
 package com.bnkmgmt.bankmanagement;
 
-import com.bnkmgmt.bank.FinixBank;
+import com.bnkmgmt.finixbank.FinixBank;
 
 public class MainApp {
 

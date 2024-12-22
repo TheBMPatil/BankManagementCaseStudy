@@ -1,8 +1,8 @@
-package com.bnkmgmt.bank;
+package com.bnkmgmt.finixbank;
 
 import java.util.Scanner;
 
-import com.bnkmgmt.acount.Account;
+import com.bnkmgmt.account.Account;
 
 public class FinixBank {
 

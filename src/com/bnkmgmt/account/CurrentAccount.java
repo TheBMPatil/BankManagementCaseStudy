@@ -1,9 +1,9 @@
-package com.bnkmgmt.acount;
+package com.bnkmgmt.account;
 
 public class CurrentAccount extends Account {
 
 	private static int accNoCnt = 1100;
-
+	static String type = "Current";
 	double overDraftLimit;
 	static double currentAccountInterest = 7.00;
 
@@ -39,21 +39,47 @@ public class CurrentAccount extends Account {
 	}
 
 	@Override
-	public void deposite(double amount) {
+	public void deposit(double amount) {
 		this.setBalance(this.getBalance() + amount);
 		System.out.println("Deposite successfull of amount : " + amount + " \n Balance : " + this.getBalance());
 	}
 
 	@Override
-	public void withdrow(double amount) {
-		// TODO Auto-generated method stub
+	public void withdraw(double amount) {
+		if (amount <= this.getBalance()) {
+			this.setBalance(this.getBalance() - amount);
+			System.out.println("Withdrawal successful. Remaining balance: " + this.getBalance());
+		} else if (amount <= this.getBalance() + overDraftLimit) {
+			double overdraftUsed = amount - this.getBalance();
+			this.setBalance(0);
+			this.overDraftLimit -= overdraftUsed;
+			System.out.println(
+					"Withdrawal successful using overdraft. Remaining overdraft limit: " + this.overDraftLimit);
+		} else {
+			System.out.println("Insufficient balance or overdraft limit exceeded.");
+		}
+	}
+
+//	@Override
+//	public void withdraw(double amount) {
+//		// TODO Auto-generated method stub
+//		if (amount < overDraftLimit) {
+//			this.setBalance(this.getBalance() - amount);
+//		} else {
+//			System.out.println("Insufficiant balance");
+//		}
+//
+//	}
+
+	@Override
+	public void calculateIntrest() {
+//		System.out.println("Interest calculation is not applicable for current accounts.");
 
 	}
 
-	@Override
-	public void calculateIntrest(double amount) {
-		// TODO Auto-generated method stub
-
+	public void checkBalance() {
+//		calculateIntrest();
+		System.out.println("Balance : " + this.getBalance());
 	}
 
 	public void accountInfo() {
@@ -63,6 +89,12 @@ public class CurrentAccount extends Account {
 		System.out.println("Over Draft Limit : " + overDraftLimit);
 		System.out.println("Intrest rate : " + currentAccountInterest);
 		System.out.println("====================================================================");
+	}
+
+	@Override
+	public String getType() {
+		// TODO Auto-generated method stub
+		return this.type;
 	}
 
 }

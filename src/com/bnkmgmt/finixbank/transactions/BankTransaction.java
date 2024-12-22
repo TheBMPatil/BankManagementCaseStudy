@@ -1,13 +1,13 @@
-package com.bnkmgmt.bank;
+package com.bnkmgmt.finixbank.transactions;
 
 public class BankTransaction {
 	static int tranNo = 9000;
 	int tranID;
 	int accNo;
 	String tranType;
-	int tranAmount;
+	double tranAmount;
 
-	BankTransaction(int accNo, String type, int amount) {
+	public BankTransaction(int accNo, String type, double amount) {
 		this.tranID = tranNo++;
 		this.accNo = accNo;
 		this.tranType = type;
@@ -26,15 +26,15 @@ public class BankTransaction {
 		return tranType;
 	}
 
-	public int getTranAmount() {
+	public double getTranAmount() {
 		return tranAmount;
 	}
 
 	public void transactionInfo() {
 		System.out.println("Transactin Id         : " + tranID);
-		System.out.println("Acount no Associiated : " + accNo);
+		System.out.print("\tAcount no Associiated : " + accNo);
 		System.out.println("Type of Transaction   : " + tranType);
-		System.out.println("Transactin Amount     : " + tranAmount);
+		System.out.print("\nTransactin Amount     : " + tranAmount);
 
 	}
 }

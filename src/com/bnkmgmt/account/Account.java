@@ -1,4 +1,4 @@
-package com.bnkmgmt.acount;
+package com.bnkmgmt.account;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,6 +9,7 @@ import java.util.Date;
 public abstract class Account {
 	private static int cidcnt = 1000;
 	int accountNo;
+
 	private int customerId;
 	private String custumerName;
 	private double balance;
@@ -16,6 +17,8 @@ public abstract class Account {
 	private Date creationDate;
 	private Date dateOfBirth;
 	private long mobileNumber;
+
+	boolean freez = false;
 	private static String branchCode = "FinixFB1110";
 	private static String IFSC = "FINX0008408";
 
@@ -112,12 +115,24 @@ public abstract class Account {
 		this.mobileNumber = mobileNumber;
 	}
 
+	public boolean freezStatus() {
+		return freez;
+	}
+
+	public void freezUnFreez() {
+		this.freez = (!this.freez);
+	}
+
 	// Abstract methods thet will be implemented by derived classes
-	public abstract void deposite(double amount);
+	public abstract void deposit(double amount);
 
-	public abstract void withdrow(double amount);
+	public abstract void withdraw(double amount);
 
-	public abstract void calculateIntrest(double amount);
+	public abstract void calculateIntrest();
+
+	public abstract String getType();
+
+	public abstract void checkBalance();
 
 	public void accountInfo() {
 		System.out.println("--------------------------------------------------------------------");

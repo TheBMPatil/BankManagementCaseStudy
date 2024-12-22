@@ -1,4 +1,4 @@
-package com.bnkmgmt.acount;
+package com.bnkmgmt.account;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
