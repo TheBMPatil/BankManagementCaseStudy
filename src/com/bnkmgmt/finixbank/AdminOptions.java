@@ -9,20 +9,22 @@ import com.bnkmgmt.account.SalaryAccount;
 import com.bnkmgmt.account.SavingAccount;
 import com.bnkmgmt.finixbank.transactions.BankAccountsCreated;
 import com.bnkmgmt.finixbank.transactions.BankTransaction;
+import com.bnkmgmt.finixbank.utils.BankUtils;
 
 public class AdminOptions {
+	static AdminOptions admin = new AdminOptions();
 	static Scanner sc = new Scanner(System.in);
 	static BankTransaction[] transactionOfDay = new BankTransaction[50];
 	static BankAccountsCreated[] accountCreatedToday = new BankAccountsCreated[50];
-	static int accountsIndex = 0;
+	static int accountIndexHelper = 0;
 	static int accountsCreatedIndex = 0;
 	static int transactionOfDayIndex = 0;
 
-	public static void adminOperations(Account[] AllAccounts) {
+	public static int adminOperations(Account[] AllAccounts, int accountsIndex) {
 		int adminChoice;
 		int accInd;
+		accountIndexHelper = accountsIndex;
 
-		hardcodedAccounnts(AllAccounts);
 		System.out.println("\n\n++++++++__ Welcom to Admin Panel __++++++++\n");
 		do {
 
@@ -38,10 +40,10 @@ public class AdminOptions {
 			switch (adminChoice) {
 			case 0:
 				System.out.println("Logging out......!\n\n");
-				return;
+				return accountsIndex;
 			case 1: {
 				System.out.println("Account creaation");
-				Account temp = createAccount(AllAccounts);
+				Account temp = admin.createAccount(AllAccounts, accountIndexHelper);
 
 				if (temp == null) {
 					System.out.println("Faild to creaate account.");
@@ -51,6 +53,7 @@ public class AdminOptions {
 
 					accountCreatedToday[accountsCreatedIndex++] = new BankAccountsCreated(temp.getAccNo(),
 							temp.getType(), temp.getCustomerId());
+					accountsIndex = accountIndexHelper;
 				}
 			}
 
@@ -59,17 +62,17 @@ public class AdminOptions {
 			case 2:
 				System.out.println("Freezing Process :");
 
-				accInd = searchAccount(AllAccounts);
+				accInd = BankUtils.searchAccount(AllAccounts, accountIndexHelper);
 				if (accInd == -1) {
 					System.out.println("No Customer found for given data");
 					break;
 				} else {
-					freezUnFreez(AllAccounts[accInd]);
+					admin.freezUnFreez(AllAccounts[accInd]);
 				}
 				break;
 
 			case 3:
-				accInd = searchAccount(AllAccounts);
+				accInd = BankUtils.searchAccount(AllAccounts, accountIndexHelper);
 				if (accInd == -1) {
 					System.out.println("No Customer found for given data");
 					break;
@@ -81,7 +84,7 @@ public class AdminOptions {
 
 			case 4:
 				System.out.println("Deposite");
-				accInd = searchAccount(AllAccounts);
+				accInd = BankUtils.searchAccount(AllAccounts, accountIndexHelper);
 				if (accInd == -1) {
 					System.out.println("No Customer found for given data");
 					break;
@@ -100,7 +103,7 @@ public class AdminOptions {
 
 			case 5:
 				System.out.println("Withdrow");
-				accInd = searchAccount(AllAccounts);
+				accInd = BankUtils.searchAccount(AllAccounts, accountIndexHelper);
 				if (accInd == -1) {
 					System.out.println("No Customer found for given data");
 					break;
@@ -117,16 +120,16 @@ public class AdminOptions {
 				break;
 			case 6:
 				System.out.println("Calculating intrest for all..!");
-				calculateIntrestForAll(AllAccounts);
+				admin.calculateIntrestForAll(AllAccounts, accountIndexHelper);
 
 				break;
 
 			case 7:
-				endOfTheDayTransactions(transactionOfDay, accountCreatedToday);
+				admin.endOfTheDayTransactions(transactionOfDay, accountCreatedToday);
 				break;
 			case 8:
 
-				displayAllAccountList(AllAccounts);
+				admin.displayAllAccountList(AllAccounts, accountIndexHelper);
 				break;
 			default:
 				System.out.println("Invalid Choice");
@@ -135,6 +138,7 @@ public class AdminOptions {
 
 //		displayAllAccountList(AllAccounts);
 		} while (adminChoice != 0);
+		return accountsIndex;
 	}
 
 //	private static int searchAccountByCID(int custId,Account[] accs) {
@@ -148,8 +152,7 @@ public class AdminOptions {
 //		
 //	}
 
-	private static void endOfTheDayTransactions(BankTransaction[] transactionsOfDay,
-			BankAccountsCreated[] accountsCreated) {
+	private void endOfTheDayTransactions(BankTransaction[] transactionsOfDay, BankAccountsCreated[] accountsCreated) {
 
 		System.out.println("EOD Transactions");
 
@@ -190,7 +193,7 @@ public class AdminOptions {
 
 	}
 
-	private static void calculateIntrestForAll(Account[] allAccounts) {
+	private void calculateIntrestForAll(Account[] allAccounts, int accountsIndex) {
 
 		for (int iter = 0; iter < accountsIndex; iter++) {
 			System.out.println("Account : " + (iter + 1));
@@ -200,7 +203,7 @@ public class AdminOptions {
 
 	}
 
-	private static void freezUnFreez(Account account) {
+	private void freezUnFreez(Account account) {
 		String freezChoice;
 		if (account.freezStatus()) {
 			System.out.println("Account is currentlly Freez. \n Do you want to unFreeez ? (y/n)");
@@ -225,7 +228,7 @@ public class AdminOptions {
 
 	}
 
-	private static Account createAccount(Account[] allAccounts) {
+	private Account createAccount(Account[] allAccounts, int accountsIndex) {
 
 		System.out.println("Enter your name : ");
 		String name = sc.next();
@@ -266,27 +269,7 @@ public class AdminOptions {
 		return null;
 	}
 
-	public static int searchAccount(Account[] accs) {
-
-		System.out.println("Enter Customer id or accNo: ");
-		int accNo = sc.nextInt();
-		for (int idx = 0; idx < accountsIndex; idx++) {
-			if (accNo == accs[idx].getCustomerId() || accNo == accs[idx].getAccNo()) {
-				return idx;
-			}
-		}
-		return -1;
-	}
-
-	static void hardcodedAccounnts(Account[] accs) {
-		accs[accountsIndex++] = new SavingAccount("Bhagvat Mutthe", "Shivrai", "11102002", 840892072);
-		accs[accountsIndex++] = new CurrentAccount("BM Patil", "Sambhajinagar", "11102002", 840892107);
-		accs[accountsIndex++] = new SalaryAccount("BM Patil 2", "Sambhajinagar", "11102002", 840892107, 1234);
-		accs[accountsIndex++] = new LoanAccount("BM Patil3", "Sambhajinagar", "11102002", 840892107, 100000);
-
-	}
-
-	private static void displayAllAccountList(Account[] accs) {
+	private void displayAllAccountList(Account[] accs, int accountsIndex) {
 		for (int iter = 0; iter < accountsIndex; iter++) {
 			System.out.println("Account : " + (iter + 1));
 			accs[iter].accountInfo();

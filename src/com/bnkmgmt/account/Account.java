@@ -6,7 +6,10 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
+import com.bnkmgmt.finixbank.utils.BankUtils;
+
 public abstract class Account {
+
 	private static int cidcnt = 1000;
 	int accountNo;
 
@@ -21,11 +24,12 @@ public abstract class Account {
 	boolean freez = false;
 	private static String branchCode = "FinixFB1110";
 	private static String IFSC = "FINX0008408";
+	AccTransactions[] transactions = new AccTransactions[50];
 
 	public Account(String custumerName, String address, String dateOfBirth, long moNo) {
 		this.custumerName = custumerName;
 		this.address = address;
-		this.dateOfBirth = formatDOB(dateOfBirth);
+		this.dateOfBirth = BankUtils.formatDOB(dateOfBirth);
 		this.mobileNumber = moNo;
 
 		this.customerId = createCID();
@@ -36,18 +40,6 @@ public abstract class Account {
 //				new SimpleDateFormat("yyyy-MM-dd").parse(lclDate.toString());
 
 //				Date.from(lclDate.atZone(ZoneId.systemDefault()).toInstant());
-	}
-
-	private Date formatDOB(String dateOfBirth2) {
-		// TODO Auto-generated method stub
-		SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyy");
-		try {
-			return formatter.parse(dateOfBirth2);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	public static String getBranchCode() {
