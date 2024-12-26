@@ -1,24 +1,19 @@
 package com.bnkmgmt.account;
 
 public class SavingAccount extends Account {
-	static int accNoCnt = 1200;
+	static int accNoCnt = 12000;
 	static String type = "Savings";
 	static double minBalance = 1000;
 	static double savingAccountInterest = 0.04;
+	static int transactionIdCnt = 900000;
+	int transactionCount;
 
 	public SavingAccount(String custumerName, String address, String dateOfBirth, long moNo) {
 		super(custumerName, address, dateOfBirth, moNo);
-		this.accountNo = assignAccNo();
-
-	}
-
-	private int assignAccNo() {
-
-		return accNoCnt++;
-	}
-
-	public void setAccountNo(int accountNo) {
-		this.accountNo = accountNo;
+		this.accountNo = AccountUtility.generateAccountNumber(accNoCnt++);
+		this.transactionCount = 0;
+		this.transactionIdCnt += this.accountNo;
+		this.transactions = new AccTransaction[50];
 	}
 
 	public double getMinBalance() {
@@ -51,8 +46,12 @@ public class SavingAccount extends Account {
 
 	@Override
 	public void deposit(double amount) {
-
+		double oldBal = this.getBalance();
+		// Amt depostite nd update bal
 		this.setBalance(this.getBalance() + amount);
+		// Add Trasansaction into transactions Array
+		transactions[transactionCount++] = new AccTransaction(transactionIdCnt++, amount, "Deposit",
+				AccountUtility.currentDate(), oldBal, this.getBalance());
 		System.out.println("Deposite successfull of amount : " + amount + " \n Balance : " + this.getBalance());
 	}
 
@@ -63,8 +62,13 @@ public class SavingAccount extends Account {
 			System.out.println("Withdrawal not allowed. Minimum balance requirement will be violated.");
 			return;
 		} else {
+			double oldBal = this.getBalance();
 
 			this.setBalance(this.getBalance() - amount);
+			// Add Trasansaction into transactions Array
+			transactions[transactionCount++] = new AccTransaction(transactionIdCnt++, amount, "Withdrow",
+					AccountUtility.currentDate(), oldBal, this.getBalance());
+
 			System.out.println("You have withdraw Rs." + amount + " and Remaining Balance is " + this.getBalance());
 		}
 
@@ -73,7 +77,13 @@ public class SavingAccount extends Account {
 	@Override
 	public void calculateIntrest() {
 		if (this.getBalance() > minBalance) {
-			this.setBalance(this.getBalance() * savingAccountInterest);
+			double oldBal = this.getBalance();
+			double intrest = (this.getBalance() * savingAccountInterest);
+			this.setBalance(this.getBalance() + intrest);
+			// Add Trasansaction into transactions Array
+			transactions[transactionCount++] = new AccTransaction(transactionIdCnt++, intrest, "Deposit",
+					AccountUtility.currentDate(), oldBal, this.getBalance());
+
 		}
 
 	}
@@ -92,4 +102,9 @@ public class SavingAccount extends Account {
 		System.out.println("====================================================================");
 	}
 
+	public int getTransactionCount() {
+		return transactionCount;
+	}
+
+	
 }

@@ -5,16 +5,18 @@ public class LoanAccount extends Account {
 	static String type = "Loan";
 	double loanAmount;
 	static double loanAccountInterest = .11;
+	static int transactionIdCnt = 300000;
+	int transactionCount;
 
 	public LoanAccount(String custumerName, String address, String dateOfBirth, long moNo, double loanAmount) {
 		super(custumerName, address, dateOfBirth, moNo);
 		this.loanAmount = loanAmount;
-		this.accountNo = generateAccountNumber();
+		this.accountNo = AccountUtility.generateAccountNumber(accCnt++);
 		this.setBalance(loanAmount);
-	}
-
-	private int generateAccountNumber() {
-		return accCnt++;
+		calculateIntrest();
+		this.transactionCount = 0;
+		this.transactionIdCnt += this.accountNo;
+		this.transactions = new AccTransaction[50];
 	}
 
 //	public static void setLoanAccountInterest(double loanAccountInterest) {
@@ -49,7 +51,9 @@ public class LoanAccount extends Account {
 
 	@Override
 	public void calculateIntrest() {
+
 		double interest = (loanAmount * loanAccountInterest) / 100;
+		this.setBalance(this.getBalance() + interest);
 //		System.out.println("Interest on loan amount " + loanAmount + " is: " + interest);
 	}
 
@@ -65,6 +69,10 @@ public class LoanAccount extends Account {
 		System.out.println("Loan Amount : " + loanAmount);
 		System.out.println("Intrest rate : " + loanAccountInterest);
 		System.out.println("====================================================================");
+	}
+
+	public int getTransactionCount() {
+		return transactionCount;
 	}
 
 }

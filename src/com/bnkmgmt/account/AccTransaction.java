@@ -2,7 +2,7 @@ package com.bnkmgmt.account;
 
 import java.util.Date;
 
-public final class AccTransactions {
+public final class AccTransaction {
 
 	int transactionId;
 	double amount;
@@ -11,7 +11,7 @@ public final class AccTransactions {
 	double oldBal;
 	double newBal;
 
-	public AccTransactions(int transactionId, double amount, String transactionType, Date transactionDate,
+	public AccTransaction(int transactionId, double amount, String transactionType, Date transactionDate,
 			double oldBal, double newBal) {
 		this.transactionId = transactionId;
 		this.amount = amount;
@@ -34,7 +34,7 @@ public final class AccTransactions {
 	}
 
 	public void transactionInfo() {
-		System.out.println(transactionId + "\t " + transactionDate.toString() + "|t" + transactionType + "\t " + amount
+		System.out.println(transactionId + " \t " + transactionDate.toString() + "\t " + transactionType + "\t " + amount
 				+ "\t" + oldBal + "\t" + newBal + "\t");
 	}
 }

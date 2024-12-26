@@ -1,17 +1,24 @@
 package com.bnkmgmt.account;
 
 public class SalaryAccount extends Account {
+	private static int accCnt = 21000;
+	private double pfAmount;
+	private static String type = "Salary";
+	private static int transactionsLimit = 10;
+	private int transactionCount;
+	private int transactionIdCnt = 20000;
+	private int transactionsLimitCount;
 
-	double pfAmount;
-	static String type = "Salary";
-	static int transactionsLimit = 10;
-	int transactionsCount = 0;
-	static double salaryAccountInterest = 3.0;
+	private static double salaryAccountInterest = 3.0;
 
 	public SalaryAccount(String custumerName, String address, String dateOfBirth, long moNo, double pf) {
 		super(custumerName, address, dateOfBirth, moNo);
-
+		this.accountNo = AccountUtility.generateAccountNumber(accCnt++);
 		this.pfAmount = pf;
+		this.transactionCount = 0;
+		this.transactionsLimitCount = 0;
+		this.transactionIdCnt += this.accountNo;
+		this.transactions = new AccTransaction[50];
 	}
 
 	public double getPfAmount() {
@@ -31,7 +38,7 @@ public class SalaryAccount extends Account {
 	}
 
 	public void resetTransactions() {
-		transactionsCount = 0;
+		transactionsLimitCount = 0;
 		System.out.println("Transactions count reset to 0.");
 	}
 
@@ -46,7 +53,7 @@ public class SalaryAccount extends Account {
 	@Override
 	public void withdraw(double amount) {
 		// TODO Auto-generated method stub
-		if (transactionsCount >= transactionsLimit) {
+		if (transactionsLimitCount >= transactionsLimit) {
 			System.out.println("Transactions Limit reached  can't withdrow...!");
 			return;
 		} else if (this.getBalance() < amount) {
@@ -54,8 +61,8 @@ public class SalaryAccount extends Account {
 			return;
 
 		} else {
-			transactionsCount++;
-			System.out.println("Transaction Number : " + transactionsCount);
+			transactionsLimitCount++;
+			System.out.println("Transaction Number : " + transactionsLimitCount);
 			this.setBalance(this.getBalance() - amount);
 			System.out.println("Withdrowal success..!");
 			System.out.println("Balance : " + this.getBalance());
@@ -77,7 +84,7 @@ public class SalaryAccount extends Account {
 		System.out.println("PF Amount 			: " + pfAmount);
 		System.out.println("Intrest rate				: " + salaryAccountInterest);
 		System.out.println("Maximam Transaction limit 	: " + transactionsLimit);
-		System.out.println("No of transactions remaining : " + (transactionsLimit - transactionsCount));
+		System.out.println("No of transactions remaining : " + (transactionsLimit - transactionsLimitCount));
 		System.out.println("====================================================================");
 	}
 
@@ -90,6 +97,10 @@ public class SalaryAccount extends Account {
 	public String getType() {
 		// TODO Auto-generated method stub
 		return this.type;
+	}
+
+	public int getTransactionCount() {
+		return transactionCount;
 	}
 
 }

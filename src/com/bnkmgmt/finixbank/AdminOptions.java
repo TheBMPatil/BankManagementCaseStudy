@@ -16,14 +16,14 @@ public class AdminOptions {
 	static Scanner sc = new Scanner(System.in);
 	static BankTransaction[] transactionOfDay = new BankTransaction[50];
 	static BankAccountsCreated[] accountCreatedToday = new BankAccountsCreated[50];
-	static int accountIndexHelper = 0;
+//	static int accountIndexHelper = 0;
 	static int accountsCreatedIndex = 0;
 	static int transactionOfDayIndex = 0;
 
 	public static int adminOperations(Account[] AllAccounts, int accountsIndex) {
 		int adminChoice;
 		int accInd;
-		accountIndexHelper = accountsIndex;
+//		accountIndexHelper = accountsIndex;
 
 		System.out.println("\n\n++++++++__ Welcom to Admin Panel __++++++++\n");
 		do {
@@ -43,7 +43,7 @@ public class AdminOptions {
 				return accountsIndex;
 			case 1: {
 				System.out.println("Account creaation");
-				Account temp = admin.createAccount(AllAccounts, accountIndexHelper);
+				Account temp = admin.createAccount();
 
 				if (temp == null) {
 					System.out.println("Faild to creaate account.");
@@ -53,7 +53,7 @@ public class AdminOptions {
 
 					accountCreatedToday[accountsCreatedIndex++] = new BankAccountsCreated(temp.getAccNo(),
 							temp.getType(), temp.getCustomerId());
-					accountsIndex = accountIndexHelper;
+//					accountsIndex = accountIndexHelper;
 				}
 			}
 
@@ -62,7 +62,7 @@ public class AdminOptions {
 			case 2:
 				System.out.println("Freezing Process :");
 
-				accInd = BankUtils.searchAccount(AllAccounts, accountIndexHelper);
+				accInd = BankUtils.searchAccount(AllAccounts, accountsIndex);
 				if (accInd == -1) {
 					System.out.println("No Customer found for given data");
 					break;
@@ -72,7 +72,7 @@ public class AdminOptions {
 				break;
 
 			case 3:
-				accInd = BankUtils.searchAccount(AllAccounts, accountIndexHelper);
+				accInd = BankUtils.searchAccount(AllAccounts, accountsIndex);
 				if (accInd == -1) {
 					System.out.println("No Customer found for given data");
 					break;
@@ -84,7 +84,7 @@ public class AdminOptions {
 
 			case 4:
 				System.out.println("Deposite");
-				accInd = BankUtils.searchAccount(AllAccounts, accountIndexHelper);
+				accInd = BankUtils.searchAccount(AllAccounts, accountsIndex);
 				if (accInd == -1) {
 					System.out.println("No Customer found for given data");
 					break;
@@ -103,7 +103,7 @@ public class AdminOptions {
 
 			case 5:
 				System.out.println("Withdrow");
-				accInd = BankUtils.searchAccount(AllAccounts, accountIndexHelper);
+				accInd = BankUtils.searchAccount(AllAccounts, accountsIndex);
 				if (accInd == -1) {
 					System.out.println("No Customer found for given data");
 					break;
@@ -120,7 +120,7 @@ public class AdminOptions {
 				break;
 			case 6:
 				System.out.println("Calculating intrest for all..!");
-				admin.calculateIntrestForAll(AllAccounts, accountIndexHelper);
+				admin.calculateIntrestForAll(AllAccounts, accountsIndex);
 
 				break;
 
@@ -128,8 +128,7 @@ public class AdminOptions {
 				admin.endOfTheDayTransactions(transactionOfDay, accountCreatedToday);
 				break;
 			case 8:
-
-				admin.displayAllAccountList(AllAccounts, accountIndexHelper);
+				admin.displayAllAccountList(AllAccounts, accountsIndex);
 				break;
 			default:
 				System.out.println("Invalid Choice");
@@ -158,11 +157,13 @@ public class AdminOptions {
 
 		double totalDeposite = 0;
 		double totalWithdrow = 0;
-		System.out.println("========================== Transactions of Day ===================================");
+		System.out.println("\n========================== Transactions of Day ===================================\n");
 
 		if (transactionOfDayIndex == 0) {
 			System.out.println("Not enough data to display...!");
 		} else {
+			System.out.println(
+					"Transactin Id  \t Acount no Associiated \t Type of Transaction   \t Transactin Amount     \n");
 			for (int iter = 0; iter < transactionOfDayIndex; iter++) {
 				transactionsOfDay[iter].transactionInfo();
 				if (transactionsOfDay[iter].getTranType().equals("Deposit")) {
@@ -173,32 +174,39 @@ public class AdminOptions {
 			}
 		}
 
-		System.out.println("========================== Accounts created of Day ===================================");
+		System.out
+				.println("\n========================== Accounts created of Day ===================================\n");
 		int totalAccCreated = 0;
 
 		if (accountsCreatedIndex == 0) {
 			System.out.println("Not enough data to display...!");
 		} else {
+
+			System.out.println(
+					"Type of Account created    \t Transaction ID \t Customer Id \t Acount no Associiated 		\n");
+
 			for (; totalAccCreated < accountsCreatedIndex; totalAccCreated++) {
 				accountsCreated[totalAccCreated].transactionInfo();
 			}
 		}
 
-		System.out.println("_______________________________________________________________________________________");
+		System.out
+				.println("\n_______________________________________________________________________________________\n");
 
 		System.out.println("Total : ----------------------------------------------------");
-		System.out.println("\nAccount Created : " + totalAccCreated + "\tTotal Deposit : " + totalDeposite
-				+ "\tTotal Withdrowlas : " + totalWithdrow);
-		System.out.println("_______________________________________________________________________________________");
+		System.out.println("\nAccount Created : " + totalAccCreated + "\t Total Deposit : " + totalDeposite
+				+ "\t Total Withdrowlas : " + totalWithdrow);
+		System.out
+				.println("\n_______________________________________________________________________________________\n");
 
 	}
 
 	private void calculateIntrestForAll(Account[] allAccounts, int accountsIndex) {
 
 		for (int iter = 0; iter < accountsIndex; iter++) {
-			System.out.println("Account : " + (iter + 1));
+//			System.out.println("Account : " + (iter + 1));
 			allAccounts[iter].calculateIntrest();
-			;
+
 		}
 
 	}
@@ -228,7 +236,7 @@ public class AdminOptions {
 
 	}
 
-	private Account createAccount(Account[] allAccounts, int accountsIndex) {
+	private Account createAccount() {
 
 		System.out.println("Enter your name : ");
 		String name = sc.next();
@@ -244,7 +252,7 @@ public class AdminOptions {
 		if (acType.charAt(0) == 'L' || acType.charAt(0) == 'l') {
 			System.out.println("Enter Loan Amount : ");
 			extraAmt = sc.nextDouble();
-			allAccounts[accountsIndex++] = new LoanAccount(name, add, dob, mono, extraAmt);
+//			allAccounts[accountsIndex] = new LoanAccount(name, add, dob, mono, extraAmt);
 			return new LoanAccount(name, add, dob, mono, extraAmt);
 
 //			return allAccounts[accountsIndex - 1].getCustomerId();
@@ -256,7 +264,7 @@ public class AdminOptions {
 //			return allAccounts[accountsIndex - 1].getCustomerId();
 
 		} else if (acType.equalsIgnoreCase("S")) {
-			allAccounts[accountsIndex++] = new SavingAccount(name, add, dob, mono);
+//			allAccounts[accountsIndex] = new SavingAccount(name, add, dob, mono);
 			return new SavingAccount(name, add, dob, mono);
 //			return allAccounts[accountsIndex - 1].getCustomerId();
 		} else if (acType.equalsIgnoreCase("C")) {

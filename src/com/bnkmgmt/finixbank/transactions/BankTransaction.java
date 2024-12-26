@@ -31,10 +31,13 @@ public class BankTransaction {
 	}
 
 	public void transactionInfo() {
-		System.out.println("Transactin Id         : " + tranID);
-		System.out.print("\tAcount no Associiated : " + accNo);
-		System.out.println("Type of Transaction   : " + tranType);
-		System.out.print("\nTransactin Amount     : " + tranAmount);
+
+		System.out.println(tranID + "\t" + accNo + "\t" + tranType + "\t" + tranAmount + "\n");
+
+//		System.out.println("Transactin Id         : " + tranID);
+//		System.out.print("\tAcount no Associiated : " + accNo);
+//		System.out.println("Type of Transaction   : " + tranType);
+//		System.out.print("\nTransactin Amount     : " + tranAmount);
 
 	}
 }

@@ -39,10 +39,13 @@ public class BankAccountsCreated {
 	}
 
 	public void transactionInfo() {
-		System.out.println("Type of Account creaated    : " + accountType);
-		System.out.print("\tTransactin Id         		: " + tranID);
-		System.out.println("Customer Id					: " + customerId);
-		System.out.print("\tAcount no Associiated 		: " + accNo);
+
+		System.out.println(accountType + "\t" + tranID + "\t" + customerId + "\t" + accNo + "\n");
+
+//		System.out.println("Type of Account creaated    : " + accountType);
+//		System.out.print("\t Transactin Id         		: " + tranID);
+//		System.out.print("Customer Id					: " + customerId);
+//		System.out.print("\t Acount no Associiated 		: " + accNo + "\n");
 
 	}
 }

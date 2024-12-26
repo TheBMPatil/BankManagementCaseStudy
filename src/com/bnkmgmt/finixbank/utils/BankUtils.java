@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
+import com.bnkmgmt.account.AccTransaction;
 import com.bnkmgmt.account.Account;
 import com.bnkmgmt.account.CurrentAccount;
 import com.bnkmgmt.account.LoanAccount;
@@ -39,6 +40,22 @@ public final class BankUtils {
 
 	public static void accountLifeCycle(Account account) {
 		account.accountInfo();
+		AccTransaction[] trans = account.getTransactions();
+
+		System.out
+				.println("transactionId  \t transactionDate  \t transactionType  \t   amount \t  oldBal  \t newBal \t");
+		if (account.getTransactionCount() == 0) {
+			System.out.println("Not enough data to display..!\n\n");
+			System.out.println(
+					"========================================================================================\n\n");
+		} else {
+			for (int trnsactionNo = 0; trnsactionNo < account.getTransactionCount(); trnsactionNo++) {
+				trans[trnsactionNo].transactionInfo();
+//			account.getTransactions()[trnsactionNo].transactionInfo();
+			}
+			System.out.println(
+					"========================================================================================\n\n");
+		}
 	}
 
 	public static int hardcodedAccounnts(Account[] accs, int accountsIndex) {

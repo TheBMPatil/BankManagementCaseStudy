@@ -6,12 +6,17 @@ public class CurrentAccount extends Account {
 	static String type = "Current";
 	double overDraftLimit;
 	static double currentAccountInterest = 7.00;
+	static int transactionIdCnt = 800000;
+	int transactionCount;
 
 	public CurrentAccount(String custumerName, String address, String dateOfBirth, long moNo) {
 		super(custumerName, address, dateOfBirth, moNo);
 
-		this.accountNo = createAccNo();
+		this.accountNo = AccountUtility.generateAccountNumber(accNoCnt++);
 		this.overDraftLimit = assignrOverDraftLimit();
+		this.transactionCount = 0;
+		this.transactionIdCnt += this.accountNo;
+		this.transactions = new AccTransaction[50];
 	}
 
 //Assign overdraaft Limit
@@ -21,10 +26,6 @@ public class CurrentAccount extends Account {
 	}
 
 //Auto Generaate ACccc no
-	private int createAccNo() {
-
-		return accNoCnt++;
-	}
 
 	public double getOverDraftLimit() {
 		return overDraftLimit;
@@ -40,19 +41,32 @@ public class CurrentAccount extends Account {
 
 	@Override
 	public void deposit(double amount) {
+		double oldBal = this.getBalance();
 		this.setBalance(this.getBalance() + amount);
+		// Add Trasansaction into transactions Array
+		transactions[transactionCount++] = new AccTransaction(transactionIdCnt++, amount, "Deposit",
+				AccountUtility.currentDate(), oldBal, this.getBalance());
+
 		System.out.println("Deposite successfull of amount : " + amount + " \n Balance : " + this.getBalance());
 	}
 
 	@Override
 	public void withdraw(double amount) {
+		double oldBal = this.getBalance();
 		if (amount <= this.getBalance()) {
 			this.setBalance(this.getBalance() - amount);
 			System.out.println("Withdrawal successful. Remaining balance: " + this.getBalance());
+			// Add Trasansaction into transactions Array
+			transactions[transactionCount++] = new AccTransaction(transactionIdCnt++, amount, "Withdrow",
+					AccountUtility.currentDate(), oldBal, this.getBalance());
+
 		} else if (amount <= this.getBalance() + overDraftLimit) {
 			double overdraftUsed = amount - this.getBalance();
 			this.setBalance(0);
 			this.overDraftLimit -= overdraftUsed;
+			// Add Trasansaction into transactions Array
+			transactions[transactionCount++] = new AccTransaction(transactionIdCnt++, amount, "Withdrow",
+					AccountUtility.currentDate(), oldBal, this.getBalance());
 			System.out.println(
 					"Withdrawal successful using overdraft. Remaining overdraft limit: " + this.overDraftLimit);
 		} else {
@@ -95,6 +109,10 @@ public class CurrentAccount extends Account {
 	public String getType() {
 		// TODO Auto-generated method stub
 		return this.type;
+	}
+
+	public int getTransactionCount() {
+		return transactionCount;
 	}
 
 }

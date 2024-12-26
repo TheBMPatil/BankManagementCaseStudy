@@ -23,7 +23,7 @@ public class FinixBank {
 			loginChoice = sc.nextInt();
 			switch (loginChoice) {
 			case 1:
-				System.out.println("Enter Admon Password :");
+				System.out.println("Enter Admin Password :");
 				int userPass = sc.nextInt();
 				if (userPass == adminPass) {
 					accountsIndex = AdminOptions.adminOperations(accs, accountsIndex);

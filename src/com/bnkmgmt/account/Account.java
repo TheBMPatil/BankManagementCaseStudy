@@ -1,9 +1,5 @@
 package com.bnkmgmt.account;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 
 import com.bnkmgmt.finixbank.utils.BankUtils;
@@ -24,7 +20,7 @@ public abstract class Account {
 	boolean freez = false;
 	private static String branchCode = "FinixFB1110";
 	private static String IFSC = "FINX0008408";
-	AccTransactions[] transactions = new AccTransactions[50];
+	AccTransaction[] transactions;
 
 	public Account(String custumerName, String address, String dateOfBirth, long moNo) {
 		this.custumerName = custumerName;
@@ -32,11 +28,10 @@ public abstract class Account {
 		this.dateOfBirth = BankUtils.formatDOB(dateOfBirth);
 		this.mobileNumber = moNo;
 
-		this.customerId = createCID();
+		this.customerId = AccountUtility.generateCustomerID(cidcnt++);
 		this.balance = 0.00;
 //		LocalDate lclDate=  LocalDate.now(); 
-		this.creationDate = Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-
+		this.creationDate = AccountUtility.currentDate();
 //				new SimpleDateFormat("yyyy-MM-dd").parse(lclDate.toString());
 
 //				Date.from(lclDate.atZone(ZoneId.systemDefault()).toInstant());
@@ -48,11 +43,6 @@ public abstract class Account {
 
 	public static String getIFSC() {
 		return IFSC;
-	}
-
-	private int createCID() {
-
-		return cidcnt++;
 	}
 
 	public int getCustomerId() {
@@ -126,17 +116,23 @@ public abstract class Account {
 
 	public abstract void checkBalance();
 
+	public abstract int getTransactionCount();
+
+	public AccTransaction[] getTransactions() {
+		return transactions;
+	}
+
 	public void accountInfo() {
 		System.out.println("--------------------------------------------------------------------");
-		System.out.println("Bank Name : Finix Bank ");
-		System.out.println("Branch code: " + branchCode);
-		System.out.println("IFSC code: " + IFSC);
+		System.out.println("Bank Name 	: Finix Bank ");
+		System.out.println("Branch code : " + branchCode);
+		System.out.println("IFSC code 	: " + IFSC);
 		System.out.println("--------------------------------------------------------------------");
 		System.out.println("Customer ID : " + this.customerId);
 		System.out.println("Aaccount Holder Name : " + this.custumerName);
-		System.out.println("DOB : " + this.dateOfBirth);
-		System.out.println("Contact : " + this.mobileNumber);
-		System.out.println("Address : " + this.address);
+		System.out.println("DOB 		: " + this.dateOfBirth);
+		System.out.println("Contact 	: " + this.mobileNumber);
+		System.out.println("Address 	: " + this.address);
 		System.out.println("Account creation Date : " + this.creationDate);
 		System.out.println("--------------------------------------------------------------------");
 
