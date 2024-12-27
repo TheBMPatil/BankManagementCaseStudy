@@ -1,19 +1,19 @@
 package com.bnkmgmt.account;
 
-public class SavingAccount extends Account {
-	static int accNoCnt = 12000;
-	static String type = "Savings";
-	static double minBalance = 1000;
-	static double savingAccountInterest = 0.04;
-	static int transactionIdCnt = 900000;
-	int transactionCount;
+public final class SavingAccount extends Account {
+	private static int accNoCnt = 1200;
+	private static String type = "Savings";
+	private static double minBalance = 1000;
+	private static double savingAccountInterest = 0.04;
+	private int transactionIdCnt = 900000;
+	private int transactionCount;
 
 	public SavingAccount(String custumerName, String address, String dateOfBirth, long moNo) {
 		super(custumerName, address, dateOfBirth, moNo);
 		this.accountNo = AccountUtility.generateAccountNumber(accNoCnt++);
 		this.transactionCount = 0;
 		this.transactionIdCnt += this.accountNo;
-		this.transactions = new AccTransaction[50];
+		this.setTransactions(new AccTransaction[50]);
 	}
 
 	public double getMinBalance() {
@@ -47,10 +47,10 @@ public class SavingAccount extends Account {
 	@Override
 	public void deposit(double amount) {
 		double oldBal = this.getBalance();
-		// Amt depostite nd update bal
+		// Amt deposit nd update bal
 		this.setBalance(this.getBalance() + amount);
 		// Add Trasansaction into transactions Array
-		transactions[transactionCount++] = new AccTransaction(transactionIdCnt++, amount, "Deposit",
+		this.getTransactions()[transactionCount++] = new AccTransaction(transactionIdCnt++, amount, "Deposit",
 				AccountUtility.currentDate(), oldBal, this.getBalance());
 		System.out.println("Deposite successfull of amount : " + amount + " \n Balance : " + this.getBalance());
 	}
@@ -66,7 +66,7 @@ public class SavingAccount extends Account {
 
 			this.setBalance(this.getBalance() - amount);
 			// Add Trasansaction into transactions Array
-			transactions[transactionCount++] = new AccTransaction(transactionIdCnt++, amount, "Withdrow",
+			this.getTransactions()[transactionCount++] = new AccTransaction(transactionIdCnt++, amount, "Withdrow",
 					AccountUtility.currentDate(), oldBal, this.getBalance());
 
 			System.out.println("You have withdraw Rs." + amount + " and Remaining Balance is " + this.getBalance());
@@ -81,7 +81,7 @@ public class SavingAccount extends Account {
 			double intrest = (this.getBalance() * savingAccountInterest);
 			this.setBalance(this.getBalance() + intrest);
 			// Add Trasansaction into transactions Array
-			transactions[transactionCount++] = new AccTransaction(transactionIdCnt++, intrest, "Deposit",
+			this.getTransactions()[transactionCount++] = new AccTransaction(transactionIdCnt++, intrest, "Deposit-INT",
 					AccountUtility.currentDate(), oldBal, this.getBalance());
 
 		}
@@ -93,18 +93,18 @@ public class SavingAccount extends Account {
 		return this.type;
 	}
 
-	public void accountInfo() {
-		super.accountInfo();
-		System.out.println("Account Type : Savings Account");
-		System.out.println("Acccount Number : " + accountNo);
-		System.out.println("Min. Bal. Limit : " + minBalance);
-		System.out.println("Intrest rate : " + savingAccountInterest);
-		System.out.println("====================================================================");
-	}
-
 	public int getTransactionCount() {
 		return transactionCount;
 	}
 
-	
+	@Override
+	public void accountInfo() {
+		super.accountInfo();
+		System.out.println("Account Type            : Savings Account");
+		System.out.println("Account Number          : " + accountNo);
+		System.out.println("Minimum Balance Limit   : " + minBalance);
+		System.out.println("Interest Rate           : " + (savingAccountInterest * 100) + "%");
+		System.out.println("====================================================================");
+	}
+
 }

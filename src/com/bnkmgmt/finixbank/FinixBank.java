@@ -18,8 +18,9 @@ public class FinixBank {
 		do {
 			System.out.println("1 : Login as Addmin  ");
 			System.out.println("2 : View Account Life Cycle");
+			System.out.println("3 : Cheack balance");
 
-			System.out.println("3 : Exit");
+			System.out.println("5 : Exit");
 			loginChoice = sc.nextInt();
 			switch (loginChoice) {
 			case 1:
@@ -47,6 +48,16 @@ public class FinixBank {
 				}
 				break;
 			case 3:
+				System.out.println("Cheac Balance");
+				int accInd = BankUtils.searchAccount(accs, accountsIndex);
+				if (accInd == -1) {
+					System.out.println("No Customer found for given data");
+					break;
+				} else {
+					accs[accInd].checkBalance();
+				}
+				break;
+			case 5:
 				System.out.println("Exiting...!");
 				return;
 			default:
@@ -54,7 +65,7 @@ public class FinixBank {
 				System.out.println("Invalid CChoice..!");
 				break;
 			}
-		} while (loginChoice != 3);
+		} while (loginChoice != 5);
 	}
 
 }

@@ -2,6 +2,8 @@ package com.bnkmgmt.account;
 
 import java.util.Date;
 
+import com.bnkmgmt.finixbank.utils.BankUtils;
+
 public final class AccTransaction {
 
 	int transactionId;
@@ -11,8 +13,8 @@ public final class AccTransaction {
 	double oldBal;
 	double newBal;
 
-	public AccTransaction(int transactionId, double amount, String transactionType, Date transactionDate,
-			double oldBal, double newBal) {
+	public AccTransaction(int transactionId, double amount, String transactionType, Date transactionDate, double oldBal,
+			double newBal) {
 		this.transactionId = transactionId;
 		this.amount = amount;
 		this.transactionType = transactionType;
@@ -34,7 +36,8 @@ public final class AccTransaction {
 	}
 
 	public void transactionInfo() {
-		System.out.println(transactionId + " \t " + transactionDate.toString() + "\t " + transactionType + "\t " + amount
-				+ "\t" + oldBal + "\t" + newBal + "\t");
+		System.out.println(transactionId + " \t\t\t " + BankUtils.datePrinter(transactionDate) + " \t " + transactionType
+				+ " \t\t " + amount + " \t " + oldBal + " \t " + newBal + " \t");
 	}
+
 }

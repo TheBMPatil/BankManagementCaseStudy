@@ -29,10 +29,11 @@ public class AdminOptions {
 		do {
 
 			System.out.println(".......................................................");
-			System.out.println("1 : Add New Account \t 2 Freez / Activate ");
-			System.out.println("3 : Search account \t 4) Deposite ");
-			System.out.println("5 : Withdrow       \t 6) Calculatte Intrest ");
-			System.out.println("7 : EOD Report     \t 0) Exit ");
+			System.out.println("1 : Add New Account \t 2 : Freez / Activate ");
+			System.out.println("3 : Search account \t 4 : Deposite ");
+			System.out.println("5 : Withdrow       \t 6 : Calculatte Intrest ");
+			System.out.println("7 : EOD Report    \t 8 : Cheack Balance");
+			System.out.println("0 : Exit ");
 			System.out.println(".......................................................");
 			System.out.println("Enter Your choice : ");
 			adminChoice = sc.nextInt();
@@ -128,6 +129,17 @@ public class AdminOptions {
 				admin.endOfTheDayTransactions(transactionOfDay, accountCreatedToday);
 				break;
 			case 8:
+				System.out.println("Cheac Balance");
+				accInd = BankUtils.searchAccount(AllAccounts, accountsIndex);
+				if (accInd == -1) {
+					System.out.println("No Customer found for given data");
+					break;
+				} else {
+					AllAccounts[accInd].checkBalance();
+				}
+				break;
+
+			case 9:
 				admin.displayAllAccountList(AllAccounts, accountsIndex);
 				break;
 			default:
@@ -237,44 +249,47 @@ public class AdminOptions {
 	}
 
 	private Account createAccount() {
-
+		sc.nextLine();
 		System.out.println("Enter your name : ");
-		String name = sc.next();
+		String name = sc.nextLine();
+
 		System.out.println("Enter Mobile Number: ");
 		long mono = sc.nextLong();
+		sc.nextLine();
+
 		System.out.println("Enter your Address :");
-		String add = sc.next();
+		String add = sc.nextLine();
+
 		System.out.println("Enter Your DOB (ddmmyyyy) (eg:11102002): ");
-		String dob = sc.next();
+		String dob = sc.nextLine();
+
 		System.out.println("Enter Type of Account :(Savings : S ,Loan : L, Current :C, Salary : E");
-		String acType = sc.next();
+		String acType = sc.nextLine();
+
 		double extraAmt = 0;
-		if (acType.charAt(0) == 'L' || acType.charAt(0) == 'l') {
-			System.out.println("Enter Loan Amount : ");
+		switch (acType.toUpperCase()) {
+		case "L":
+			System.out.println("Enter Loan Amount: ");
 			extraAmt = sc.nextDouble();
-//			allAccounts[accountsIndex] = new LoanAccount(name, add, dob, mono, extraAmt);
+			sc.nextLine(); // Clear the newline character
 			return new LoanAccount(name, add, dob, mono, extraAmt);
 
-//			return allAccounts[accountsIndex - 1].getCustomerId();
-		} else if (acType.equalsIgnoreCase("E")) {
-			System.out.println("Enter PF Amount : ");
+		case "E":
+			System.out.println("Enter PF Amount: ");
 			extraAmt = sc.nextDouble();
-//			allAccounts[accountsIndex++] = new SalaryAccount(name, add, dob, mono, extraAmt);
+			sc.nextLine(); // Clear the newline character
 			return new SalaryAccount(name, add, dob, mono, extraAmt);
-//			return allAccounts[accountsIndex - 1].getCustomerId();
 
-		} else if (acType.equalsIgnoreCase("S")) {
-//			allAccounts[accountsIndex] = new SavingAccount(name, add, dob, mono);
+		case "S":
 			return new SavingAccount(name, add, dob, mono);
-//			return allAccounts[accountsIndex - 1].getCustomerId();
-		} else if (acType.equalsIgnoreCase("C")) {
-//			allAccounts[accountsIndex++] = new CurrentAccount(name, add, dob, mono);
+
+		case "C":
 			return new CurrentAccount(name, add, dob, mono);
-//			return allAccounts[accountsIndex - 1].getCustomerId();
-		} else {
+
+		default:
 			System.out.println("Invalid Choice..!");
+			return null;
 		}
-		return null;
 	}
 
 	private void displayAllAccountList(Account[] accs, int accountsIndex) {
@@ -285,17 +300,3 @@ public class AdminOptions {
 	}
 
 }
-
-//
-//{
-//	System.out.println("Deactivation process");
-//	int accIndex = searchAccount(AllAccounts);
-//	AllAccounts[accIndex].accountInfo();
-//	
-//	System.out.println("Confirm deactivation ? (y/n)");
-//	String confirm = sc.next();
-//	if(confirm.equals("y")) {
-//		System.out.println("Deleting account..!");
-//		Account accc = AllAccounts[accIndex];
-//		
-//	}}

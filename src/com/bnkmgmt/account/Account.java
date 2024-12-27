@@ -1,11 +1,12 @@
 package com.bnkmgmt.account;
 
 import java.util.Date;
+import java.util.Scanner;
 
 import com.bnkmgmt.finixbank.utils.BankUtils;
 
 public abstract class Account {
-
+Scanner sc = new Scanner(System.in);
 	private static int cidcnt = 1000;
 	int accountNo;
 
@@ -20,7 +21,7 @@ public abstract class Account {
 	boolean freez = false;
 	private static String branchCode = "FinixFB1110";
 	private static String IFSC = "FINX0008408";
-	AccTransaction[] transactions;
+	private AccTransaction[] transactions;
 
 	public Account(String custumerName, String address, String dateOfBirth, long moNo) {
 		this.custumerName = custumerName;
@@ -105,6 +106,10 @@ public abstract class Account {
 		this.freez = (!this.freez);
 	}
 
+	public void setFreez() {
+		this.freez = true;
+	}
+
 	// Abstract methods thet will be implemented by derived classes
 	public abstract void deposit(double amount);
 
@@ -122,20 +127,23 @@ public abstract class Account {
 		return transactions;
 	}
 
+	public void setTransactions(AccTransaction[] trans) {
+		transactions = trans;
+	}
+
 	public void accountInfo() {
 		System.out.println("--------------------------------------------------------------------");
-		System.out.println("Bank Name 	: Finix Bank ");
-		System.out.println("Branch code : " + branchCode);
-		System.out.println("IFSC code 	: " + IFSC);
+		System.out.println("Bank Name             : Finix Bank");
+		System.out.println("Branch Code           : " + branchCode);
+		System.out.println("IFSC Code             : " + IFSC);
 		System.out.println("--------------------------------------------------------------------");
-		System.out.println("Customer ID : " + this.customerId);
-		System.out.println("Aaccount Holder Name : " + this.custumerName);
-		System.out.println("DOB 		: " + this.dateOfBirth);
-		System.out.println("Contact 	: " + this.mobileNumber);
-		System.out.println("Address 	: " + this.address);
-		System.out.println("Account creation Date : " + this.creationDate);
+		System.out.println("Customer ID           : " + this.customerId);
+		System.out.println("Account Holder Name   : " + this.custumerName);
+		System.out.println("DOB                   : " + BankUtils.dateOfBirthPrinter(dateOfBirth));
+		System.out.println("Contact               : " + this.mobileNumber);
+		System.out.println("Address               : " + this.address);
+		System.out.println("Account Creation Date : " + BankUtils.datePrinter(creationDate));
 		System.out.println("--------------------------------------------------------------------");
-
 	}
 
 }
