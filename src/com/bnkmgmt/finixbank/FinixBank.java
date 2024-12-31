@@ -3,6 +3,7 @@ package com.bnkmgmt.finixbank;
 import java.util.Scanner;
 
 import com.bnkmgmt.account.Account;
+import com.bnkmgmt.exceptions.MenuChoiceException;
 import com.bnkmgmt.finixbank.utils.BankUtils;
 
 public class FinixBank {
@@ -22,6 +23,15 @@ public class FinixBank {
 
 			System.out.println("5 : Exit");
 			loginChoice = sc.nextInt();
+			if (loginChoice >= 5 || loginChoice <= 0) {
+				try {
+					throw new MenuChoiceException("Invalid Choice ");
+				} catch (MenuChoiceException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
 			switch (loginChoice) {
 			case 1:
 				System.out.println("Enter Admin Password :");
@@ -60,9 +70,9 @@ public class FinixBank {
 			case 5:
 				System.out.println("Exiting...!");
 				return;
-			default:
 
-				System.out.println("Invalid CChoice..!");
+			default:
+				System.out.println("Invalid Choice..!");
 				break;
 			}
 		} while (loginChoice != 5);
